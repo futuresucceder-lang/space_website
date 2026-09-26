@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CosmoSpace</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #030712;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 20px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(3, 7, 18, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: bold;
+            color: #8b5cf6;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #a78bfa;
+        }
+
+        /* Stars */
+        .stars,
+        .stars::before,
+        .stars::after {
+            position: fixed;
+            width: 3px;
+            height: 3px;
+            background: white;
+            border-radius: 50%;
+            content: "";
+            box-shadow:
+                100px 100px white,
+                200px 300px #ddd,
+                400px 150px white,
+                600px 400px #aaa,
+                800px 200px white,
+                1000px 500px #ddd,
+                1200px 100px white,
+                300px 600px #aaa,
+                700px 700px white,
+                1100px 650px #ddd,
+                1300px 350px white;
+            animation: twinkle 4s infinite alternate;
+            z-index: -1;
+        }
+
+        .stars {
+            top: 0;
+            left: 0;
+        }
+
+        .stars::before {
+            top: 200px;
+            left: 100px;
+            animation-delay: 1s;
+        }
+
+        .stars::after {
+            top: 400px;
+            left: 300px;
+            animation-delay: 2s;
+        }
+
+        @keyframes twinkle {
+            from {
+                opacity: 0.3;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 120px 10% 60px;
+            background:
+                radial-gradient(circle at 75% 40%, #312e81 0%, transparent 25%),
+                radial-gradient(circle at 20% 80%, #581c87 0%, transparent 20%);
+        }
+
+        .hero-text {
+            max-width: 600px;
+        }
+
+        .hero h1 {
+            font-size: clamp(50px, 8vw, 90px);
+            line-height: 1;
+            margin-bottom: 25px;
+        }
+
+        .hero h1 span {
+            color: #8b5cf6;
+        }
+
+        .hero p {
+            font-size: 20px;
+            line-height: 1.7;
+            color: #cbd5e1;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 30px;
+            background: #7c3aed;
+            color: white;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: #a855f7;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(168, 85, 247, 0.4);
+        }
+
+        /* Planet */
+        .planet-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 400px;
+            height: 400px;
+        }
+
+        .planet {
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            background:
+                radial-gradient(circle at 30% 30%, #f5d0fe, #a855f7 35%, #581c87 70%, #1e1b4b);
+            box-shadow:
+                0 0 40px #9333ea,
+                0 0 100px rgba(147, 51, 234, 0.5);
+            animation: float 5s ease-in-out infinite;
+            position: relative;
+        }
+
+        .planet::after {
+            content: "";
+            position: absolute;
+            width: 380px;
+            height: 80px;
+            border: 8px solid rgba(255,255,255,0.4);
+            border-radius: 50%;
+            top: 100px;
+            left: -50px;
+            transform: rotate(-15deg);
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-25px) rotate(5deg);
+            }
+        }
+
+        /* Sections */
+        section {
+            padding: 100px 10%;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 42px;
+            margin-bottom: 50px;
+        }
+
+        .section-title span {
+            color: #8b5cf6;
+        }
+
+        /* Planets */
+        .planet-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+        }
+
+        .planet-card {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            padding: 30px;
+            text-align: center;
+            border-radius: 20px;
+            transition: 0.3s;
+        }
+
+        .planet-card:hover {
+            transform: translateY(-10px);
+            border-color: #8b5cf6;
+            box-shadow: 0 10px 40px rgba(124, 58, 237, 0.2);
+        }
+
+        .planet-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+        }
+
+        .earth {
+            background: radial-gradient(circle at 30% 30%, #60a5fa, #166534);
+        }
+
+        .mars {
+            background: radial-gradient(circle at 30% 30%, #fb923c, #7f1d1d);
+        }
+
+        .jupiter {
+            background: linear-gradient(
+                #d6a77a 15%,
+                #7c4a30 16%,
+                #f1d3a2 35%,
+                #8b5e3c 50%,
+                #d6a77a 70%
+            );
+        }
+
+        .saturn {
+            background: #d4a373;
+            position: relative;
+        }
+
+        .saturn::after {
+            content: "";
+            position: absolute;
+            width: 140px;
+            height: 35px;
+            border: 5px solid #c8a97e;
+            border-radius: 50%;
+            transform: translate(-20px, 30px) rotate(-15deg);
+        }
+
+        .planet-card h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .planet-card p {
+            color: #94a3b8;
+            line-height: 1.6;
+        }
+
+        /* Missions */
+        .missions {
+            background: rgba(15, 23, 42, 0.7);
+        }
+
+        .mission-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .mission {
+            padding: 35px;
+            border-radius: 20px;
+            background: linear-gradient(
+                145deg,
+                rgba(49, 46, 129, 0.5),
+                rgba(15, 23, 42, 0.8)
+            );
+        }
+
+        .mission h3 {
+            color: #c4b5fd;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+
+        .mission p {
+            color: #cbd5e1;
+            line-height: 1.7;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 30px;
+            background: #020617;
+            color: #64748b;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .hero {
+                flex-direction: column;
+                text-align: center;
+                gap: 60px;
+            }
+
+            .planet-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .mission-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            nav {
+                padding: 15px 5%;
+            }
+
+            nav ul {
+                display: none;
+            }
+
+            section {
+                padding: 70px 6%;
+            }
+
+            .planet-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .planet-container {
+                width: 300px;
+                height: 300px;
+            }
+
+            .planet {
+                width: 210px;
+                height: 210px;
+            }
+
+            .planet::after {
+                width: 280px;
+                left: -35px;
+                top: 75px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="stars"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">🚀 CosmoSpace</div>
+
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#planets">Planets</a></li>
+            <li><a href="#missions">Missions</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero" id="home">
+
+        <div class="hero-text">
+            <h1>Explore the <span>Universe</span></h1>
+
+            <p>
+                Journey beyond the stars and discover the mysteries
+                of planets, galaxies, black holes, and distant worlds.
+            </p>
+
+            <a href="#planets" class="btn">Start Exploring →</a>
+        </div>
+
+        <div class="planet-container">
+            <div class="planet"></div>
+        </div>
+
+    </section>
+
+    <!-- Planets -->
+    <section id="planets">
+
+        <h2 class="section-title">
+            Discover <span>Planets</span>
+        </h2>
+
+        <div class="planet-grid">
+
+            <div class="planet-card">
+                <div class="planet-icon earth"></div>
+                <h3>Earth</h3>
+                <p>
+                    Our home planet, filled with oceans, continents,
+                    and a diverse range of life.
+                </p>
+            </div>
+
+            <div class="planet-card">
+                <div class="planet-icon mars"></div>
+                <h3>Mars</h3>
+                <p>
+                    The red planet, famous for its dusty surface
+                    and giant volcanoes.
+                </p>
+            </div>
+
+            <div class="planet-card">
+                <div class="planet-icon jupiter"></div>
+                <h3>Jupiter</h3>
+                <p>
+                    The largest planet in our solar system,
+                    known for its Great Red Spot.
+                </p>
+            </div>
+
+            <div class="planet-card">
+                <div class="planet-icon saturn"></div>
+                <h3>Saturn</h3>
+                <p>
+                    A spectacular gas giant surrounded by
+                    a beautiful system of rings.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Missions -->
+    <section class="missions" id="missions">
+
+        <h2 class="section-title">
+            Space <span>Missions</span>
+        </h2>
+
+        <div class="mission-grid">
+
+            <div class="mission">
+                <h3>🌙 Lunar Exploration</h3>
+                <p>
+                    Explore Earth's Moon and learn more about its
+                    surface, history, and resources.
+                </p>
+            </div>
+
+            <div class="mission">
+                <h3>🔴 Mars Mission</h3>
+                <p>
+                    Study Mars and search for clues about whether
+                    the planet may once have supported life.
+                </p>
+            </div>
+
+            <div class="mission">
+                <h3>🪐 Deep Space</h3>
+                <p>
+                    Travel beyond the planets to investigate the
+                    outer solar system and the space beyond.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2026 CosmoSpace | Explore Beyond the Stars 🚀</p>
+    </footer>
+
+</body>
+</html>
